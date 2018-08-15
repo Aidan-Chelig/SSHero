@@ -1,0 +1,22 @@
+// controller.js
+module.exports = function(game, model) {
+    return {
+        quit() {
+            game.quit();
+        }
+    };
+}
+
+// view.js
+modeule.exports = function(model, controller) {
+    cosnt screen = new Screen();
+
+    screen.on('q', controller.quit);
+
+    return screen;
+}
+
+// ui.js
+const model = new Model();
+const controller = require('controller')(model);
+const view = require('view')(model, controller);

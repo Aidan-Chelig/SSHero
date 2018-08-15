@@ -1,0 +1,1 @@
+//create blessed modules for setup of the main game screen and key binds for main game screen
