@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 var fs = require('fs');
 var crypto = require('crypto');
 var inspect = require('util').inspect;
@@ -11,14 +13,14 @@ var buffersEqual = require('buffer-equal-constant-time');
 var ssh2 = require('ssh2');
 var utils = ssh2.utils;
 
-var pubKey = utils.genPublicKey(utils.parseKey(fs.readFileSync('./keys/user.pub')));
 
 let sshserver = new ssh2.Server({
-  hostKeys: [fs.readFileSync(config.ssh2.keys[0]), fs.readFileSync(config.ssh2.keys[1])],
+  hostKeys: [fs.readFileSync(config.ssh2.keys[0])],
   algorithms: config.ssh2.algorithms
 }, function (client) {
   console.log('Client connected!');
   let name;
+  let stream;
 
   client.on('error', (e) => {
     throw (e);
@@ -26,45 +28,26 @@ let sshserver = new ssh2.Server({
 
   client.on('authentication', function (ctx) {
     console.log("auth");
-    if (ctx.method === 'password'
-      // Note: Don't do this in production code, see
-      // https://www.brendanlong.com/timing-attacks-and-usernames.html
-      // In node v6.0.0+, you can use `crypto.timingSafeEqual()` to safely
-      // compare two values.
-      &&
-      ctx.username) {
+    if (ctx.method === 'password' && ctx.username) {
       name = ctx.username;
       ctx.accept();
-    } else if (ctx.method === 'publickey' &&
-      ctx.key.algo === pubKey.fulltype &&
-      buffersEqual(ctx.key.data, pubKey.public)) {
-      if (ctx.signature) {
-        var verifier = crypto.createVerify(ctx.sigAlgo);
-        verifier.update(ctx.blob);
-        if (verifier.verify(pubKey.publicOrig, ctx.signature))
-          ctx.accept();
-        else
-          ctx.reject();
-      } else {
-        // if no signature present, that means the client is just checking
-        // the validity of the given public key
-        ctx.accept();
-      }
     } else
       ctx.reject();
   }).on('ready', function () {
     console.log('Client authenticated!');
     let rows, cols, term;
     client.on('session', function (accept, reject) {
-
       var session = accept();
+
+      //get size of window
       session.once('pty', (accept, reject, info) => {
         rows = info.rows;
         cols = info.cols;
         term = info.term;
-        accept && accept();
+        accept();
       });
 
+      //establish a shell
       session.once('shell', (accept, reject) => {
         let stream = accept();
         stream.rows = rows;
@@ -72,15 +55,23 @@ let sshserver = new ssh2.Server({
         stream.isTTY = true;
         stream.setRawMode = (v) => {};
         stream.on("error", (v) => {
-          console.log(v)
-        })
+          console.log('stream error: ' + v);
+        });
+
+        session.on('window-change', (accept, reject, info) => {
+          if(stream) {
+            stream.rows = info.rows;
+            stream.columns = info.cols;
+            stream.emit('resize');
+          }
+        });
 
         game.registerUser(name, stream, term);
       });
     });
   }).on('error', (e) => {
-
-  }).on('end', function () {
+    throw(e);
+  }).on('end', () => {
     console.log('Client disconnected');
   });
 });
