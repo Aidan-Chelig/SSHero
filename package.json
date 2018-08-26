@@ -19,6 +19,6 @@
     "@types/ssh2": "^0.5.35"
   },
   "jshintConfig": {
-    "esversion": "6"
+    "esversion": 6
   }
 }

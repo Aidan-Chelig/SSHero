@@ -41,7 +41,7 @@ module.exports = {
             });
 
             var image = blessed.image({
-                parent: screen,
+                screen: screen,
                 parent: screen,
                 file: './logo.png',
                 type: 'ansi',
@@ -83,7 +83,7 @@ module.exports = {
                         console.log('opts');
                     },
                     'quit': () => {
-                        console.log('quit');
+                      controller.quit(user);
                     }
                 }
             });

@@ -1,10 +1,8 @@
-/* jshint esversion: 6 */
-
 var fs = require('fs');
 var crypto = require('crypto');
 var inspect = require('util').inspect;
 const ui = require('./ui');
-const game = require('./game');
+const controller = require('./controller')(ui);
 const { User } = require('./user');
 const config = require('./config');
 
@@ -66,7 +64,7 @@ let sshserver = new ssh2.Server({
           }
         });
 
-        game.registerUser(name, stream, term);
+        controller.registerUser(name, stream, term);
       });
     });
   }).on('error', (e) => {
