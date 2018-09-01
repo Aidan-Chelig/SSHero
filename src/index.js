@@ -1,3 +1,8 @@
 const server = require('./server');
+const ui = require('./ui');
+const controller = require('./controller');
 
-server.startServer();
+ui.injectController(controller);
+controller.injectUI(ui);
+
+server.startServer(controller.registerUser);
