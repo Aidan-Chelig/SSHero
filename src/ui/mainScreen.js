@@ -22,43 +22,13 @@ module.exports = {
                });
                */
 
-    var output = stream.output = blessed.box({
-      top: 'center',
-      left: 'center',
-      width: '50%',
-      height: '50%',
-      content: 'Hello {bold}world{/bold}!',
-      tags: true,
-      border: {
-        type: 'line'
-      },
-      style: {
-        fg: 'white',
-        bg: 'magenta',
-        border: {
-          fg: '#f0f0f0'
-        },
-        hover: {
-          bg: 'green'
-        }
-      }
-    });
-
-    var image = blessed.image({
+    listbar = blessed.listbar({
       screen: screen,
       parent: screen,
-      file: './logo.png',
-      type: 'ansi',
-      ascii: true,
-      left: 'center',
-      height: '100%'
-    });
-
-    listbar = blessed.listbar({
       bottom: 0,
       left: 'center',
       height: 1,
-      width: 'shrink',
+      //width: 'shrink',
       keys: true,
       vi: true,
       style: {
@@ -81,7 +51,7 @@ module.exports = {
           console.log('play');
         },
         'New Character': () => {
-          console.log('nc');
+          controller.changeScene('characterCreation', user);
         },
         'Options': () => {
           console.log('opts');
@@ -91,12 +61,7 @@ module.exports = {
         }
       }
     });
-
-
-    screen.append(image);
-   // screen.append(listbar);
     listbar.focus();
-    //user.screen.append(output);
-    user.screen.render();
+    screen.render();
   }
 };

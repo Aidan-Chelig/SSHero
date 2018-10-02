@@ -7,8 +7,13 @@ function quit(user){
   user.destroy();
 }
 
+function changeScene(sceneName, user){ 
+  ui.clearChildren(user);
+  ui[sceneName].show(user);
+}
+
 module.exports = {
-  injectUI: (u) => {
+  injectUI: (u) => { //the ui module uses the controller and the controller uses the ui
     ui = u;
   },
   registerUser: (name, stream, term) => {
@@ -16,5 +21,7 @@ module.exports = {
     users.push(temp);
     ui.mainScreen.show(temp);
     temp.screen.render();
-  }
+  },
+  changeScene,
+  quit
 };

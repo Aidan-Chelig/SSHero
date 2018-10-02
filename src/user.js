@@ -8,8 +8,8 @@ class User {
   
 
   destroy() {
-    screen.destroy();
-    connection.end();
+    this.screen.destroy();
+    this.stream.end();
   }
 }
 module.exports = User;
