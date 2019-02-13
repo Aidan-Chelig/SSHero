@@ -42,7 +42,10 @@ module.exports = {
             rows = info.rows;
             cols = info.cols;
             term = info.term;
-            accept();
+            console.log(rows);
+            console.log(cols);
+            console.log(term);
+            if(accept) accept();
           });
 
           //establish a shell

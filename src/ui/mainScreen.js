@@ -12,15 +12,17 @@ module.exports = {
   show: (user) => {
     let stream = user.stream;
     let screen = user.screen;
-    /*
-                let output = user.stream.output = new blessed.image({
-                    screen: user.screen,
-                    parent: user.screen,
-                    type: 'ansi',
-                    height: '100%',
-                  file: '../test.apng'
-               });
-               */
+
+    let output = user.stream.output = new blessed.image({
+      screen: user.screen,
+      parent: user.screen,
+      type: 'ansi',
+      ascii: true,
+      left: 'center',
+      height: 40,
+      file: __dirname + '/test.apng'
+    });
+
 
     listbar = blessed.listbar({
       screen: screen,
@@ -28,7 +30,7 @@ module.exports = {
       bottom: 0,
       left: 'center',
       height: 1,
-      //width: 'shrink',
+      width: 52,
       keys: true,
       vi: true,
       style: {
@@ -51,7 +53,7 @@ module.exports = {
           console.log('play');
         },
         'New Character': () => {
-          controller.changeScene('characterCreation', user);
+          controller.changeScene('registration', user);
         },
         'Options': () => {
           console.log('opts');
@@ -65,3 +67,4 @@ module.exports = {
     screen.render();
   }
 };
+

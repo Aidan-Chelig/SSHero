@@ -10,10 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.3",
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.5",
     "buffer-equal-constant-time": "^1.0.1",
-    "node-ssh": "^5.1.2"
+    "mongoose": "^5.4.9",
+    "node-ssh": "^5.1.2",
+    "nodemailer": "^5.1.1"
   },
   "devDependencies": {
     "@types/ssh2": "^0.5.35"

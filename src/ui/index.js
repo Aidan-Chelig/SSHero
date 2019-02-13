@@ -1,6 +1,7 @@
 const blessed = require('blessed');
 const mainScreen = require('./mainScreen');
 const characterCreation = require('./characterCreation');
+const registration = require('./registration');
 let controller;
 
 function init(stream, term) {
@@ -23,7 +24,7 @@ function init(stream, term) {
 function clearChildren(user) {
   let temp = Object.keys(user.screen.children);
   for (let i = 0; i < temp.length; i++) {
-    user.screen.remove(user.screen.children[i]);
+    user.screen.remove(user.screen.children[0]);
   }
 }
 
@@ -32,9 +33,11 @@ module.exports = {
     controller = c;
     mainScreen.injectController(c);
     characterCreation.injectController(c);
+    registration.injectController(c);
   },
   init,
   clearChildren,
   mainScreen,
-  characterCreation
+  characterCreation,
+  registration
 };
