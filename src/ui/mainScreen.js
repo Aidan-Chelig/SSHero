@@ -5,7 +5,6 @@ const blessed = require('blessed');
 let controller;
 
 module.exports = {
-
   injectController: (c) => {
     controller = c;
   },
@@ -13,7 +12,7 @@ module.exports = {
     let stream = user.stream;
     let screen = user.screen;
 
-    let output = user.stream.output = new blessed.image({
+/*    let output = user.stream.output = new blessed.image({
       screen: user.screen,
       parent: user.screen,
       type: 'ansi',
@@ -22,7 +21,7 @@ module.exports = {
       height: 40,
       file: __dirname + '/test.apng'
     });
-
+*/
 
     listbar = blessed.listbar({
       screen: screen,

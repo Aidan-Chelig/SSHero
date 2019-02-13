@@ -19,6 +19,7 @@ module.exports = {
   registerUser: (name, stream, term) => {
     temp = new User(name, stream, ui.init(stream, term));
     users.push(temp);
+      console.log(ui);
     ui.mainScreen.show(temp);
     temp.screen.render();
   },
