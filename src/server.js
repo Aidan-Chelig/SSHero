@@ -21,7 +21,11 @@ module.exports = {
       let stream;
 
       client.on('error', (e) => {
-        throw (e);
+        if(e.message == "read ECONNRESET"){
+          //ignore
+        } else {
+          throw(e);
+        }
       });
 
       client.on('authentication', function (ctx) {
@@ -42,9 +46,6 @@ module.exports = {
             rows = info.rows;
             cols = info.cols;
             term = info.term;
-            console.log(rows);
-            console.log(cols);
-            console.log(term);
             if(accept) accept();
           });
 
@@ -70,8 +71,14 @@ module.exports = {
             cb(name, stream, term);
           });
         });
+        
       }).on('error', (e) => {
-        throw(e);
+        if(e.message == "read ECONNRESET"){
+          //ignore
+        } else {
+          throw(e);
+        }
+ 
       }).on('end', () => {
         console.log('Client disconnected');
       });

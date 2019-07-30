@@ -49,10 +49,10 @@ module.exports = {
       },
       commands: {
         'Play': () => {
-          console.log('play');
+          controller.createGame('test', '', user);
         },
         'New Character': () => {
-          controller.changeScene('registration', user);
+          controller.changeScene('roomBrowser', user);
         },
         'Options': () => {
           console.log('opts');

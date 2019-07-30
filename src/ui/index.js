@@ -1,17 +1,14 @@
 const glob = require('glob');
 const path = require('path');
 const blessed = require('blessed');
-const mainScreen = require('./mainScreen');
-const characterCreation = require('./characterCreation');
-const registration = require('./registration');
 let controller;
 
 let uis = {};
 files = glob.sync('**/ui/*.js', []);
 
-for (file of files) {
+for (var file of files) {
     if(!file.includes('index')){
-        let name = file.split('\\').pop().split('/').pop().split('.')[0]
+        let name = file.split('\\').pop().split('/').pop().split('.')[0];
         uis[name] = require(path.resolve(file));
     }
 }
@@ -40,15 +37,20 @@ function clearChildren(user) {
     }
 }
 
+function tearDown(screen) {
+    screen.destroy();
+}
+
 module.exports = {
     injectController: (c) => {
         controller = c;
-        for(key in uis){
+        for(var key in uis){
             uis[key].injectController(c);
         }
     },
     init,
     clearChildren,
+    tearDown,
     ...uis
 };
 

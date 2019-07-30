@@ -22,5 +22,13 @@ module.exports = {
 				'aes128-cbc'],
 			serverHostKey: [ 'ssh-rsa', 'ssh-dss'],
 		}
+	},
+	redisoptions: {
+        host: '127.0.0.1',
+        port: 6379
+	},
+	netoptions: {
+		port: 25531,
+		host: '127.0.0.1'
 	}
-}
+};

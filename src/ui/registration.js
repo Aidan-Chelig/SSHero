@@ -19,7 +19,7 @@ module.exports = {
       height: 8,
       bg: 'green',
       autoNext: true,
-      content: 'Add Alert'
+      content: 'Pick a Name!'
     });
 
     var greaterThanEdit = blessed.Textbox({
@@ -28,10 +28,16 @@ module.exports = {
       height: 1,
       left: 2,
       right: 2,
-      bg: 'black',
+      bg: '#808080',
       keys: true,
       inputOnFocus: true,
       content: 'test',
+      style: {
+        bg: '#808080',
+        focus: {
+          bg: 'black'
+        }
+      }
     });
 
 
@@ -88,12 +94,12 @@ module.exports = {
     });
 
     cancel.on('press', function() {
-      form.reset();
+      controller.changeScene('mainScreen', user);
     });
 
     form.on('submit', function(data) {
-      form.setContent('Submitted.');
       screen.render();
+      process.nextTick(() => console.log(form.submission));
     });
 
     form.on('reset', function(data) {
