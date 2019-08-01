@@ -9,6 +9,7 @@ class StreamFilter extends Transform {
   _transform(chunk, encoding, callback){
     if(chunk.toString().startsWith(this.prefix))
       this.push(chunk.toString().slice(this.prefix.length));
+    callback();
   }
 
 }

@@ -9,8 +9,9 @@ function message(socket, prefix, type, data) {
   socket.write(JSON.stringify([prefix, type, data]));
 }
 
-function getPrefix(s, callback) {
-  message(s, -1, 'prefix', '');
+function getPrefix(s, user) {
+  //include identity data like name and UUID
+  message(s, -1, 'prefix', user.username);
 }
 
 module.exports = class Game {
@@ -26,7 +27,6 @@ module.exports = class Game {
   }
 
   joinGame(user) {
-    console.log("test");
     this.users.push(user);
     this.msgHandler.once("prefix", (data) => {
       user.game = this;
@@ -34,9 +34,9 @@ module.exports = class Game {
       this.prefix[data] = user;
       let affixprefix = new Prefixer(data);
       let filterPrefix = new StreamFilter(data);
-      user.stream.pipe(affixprefix).pipe(this.socket).pipe(filterPrefix);
+      user.stream.pipe(affixprefix).pipe(this.socket).pipe(filterPrefix).pipe(user.stream);
     });
-    let prefix = getPrefix(this.socket);
+    let prefix = getPrefix(this.socket, user);
       //user.stream.pipe(this.socket).pipe(user.stream);
     //make it so each users iostream is specific to them VVVVVVVVVVVVVVV
     //get a prefix and prefix all data sent from user with it with a transform
